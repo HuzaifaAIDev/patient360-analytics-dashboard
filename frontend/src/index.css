@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2A3550 transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #2A3550;
+  border-radius: 8px;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  @apply bg-ink-950 text-slate-200 font-sans antialiased;
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(31, 168, 156, 0.10), transparent 40%),
+    radial-gradient(circle at 85% 10%, rgba(245, 166, 35, 0.06), transparent 35%);
+  background-attachment: fixed;
+}
+
+body.light {
+  @apply bg-slate-50 text-ink-900;
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(31, 168, 156, 0.06), transparent 40%),
+    radial-gradient(circle at 85% 10%, rgba(245, 166, 35, 0.04), transparent 35%);
+}
+
+.glass {
+  @apply backdrop-blur-md border;
+  background: rgba(21, 28, 44, 0.55);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+body.light .glass {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(15, 23, 42, 0.06);
+}
+
+.data-num {
+  font-family: "JetBrains Mono", monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid #3EC3B7;
+  outline-offset: 2px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================================================
+   PRINT / PDF (window.print → "Print View")
+   Scope: only active when printing. Nothing here affects on-screen styling.
+   - .no-print        : any interactive/navigation chrome that must never print
+   - .avoid-break      : any block (card, chart, timeline entry, table row)
+                          that must never be split across a page boundary
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm;
+  }
+
+  html, body, #root {
+    height: auto !important;
+  }
+
+  /* Flat, paper-friendly surface: no gradients, no dark background, in
+     EITHER theme — printing must always produce dark text on white paper,
+     regardless of whether the dashboard was in dark or light mode. */
+  body,
+  body.light,
+  body.dark {
+    background: #ffffff !important;
+    background-image: none !important;
+    color: #1A2332 !important;
+  }
+
+  /* Tailwind applies text color utility classes directly on individual
+     elements (headings, labels, values, badges…), which override any
+     inherited `body { color }` rule regardless of specificity — inherited
+     values always lose to an explicit declaration on the element itself.
+     So every text-color utility actually used in the app is remapped here
+     to a print-safe, high-contrast equivalent. This is what actually makes
+     text legible on white paper in both dark mode and light mode. */
+  .text-slate-200,
+  .text-slate-300,
+  .text-ink-900,
+  .text-ink-950 {
+    color: #1A2332 !important;
+  }
+  .text-slate-400,
+  .text-slate-500 {
+    color: #4B5768 !important;
+  }
+  .text-clinical-300,
+  .text-clinical-400 {
+    color: #0F6B62 !important;
+  }
+  .text-amber-300,
+  .text-amber-400 {
+    color: #9A5B0A !important;
+  }
+  .text-red-300,
+  .text-red-400 {
+    color: #B91C1C !important;
+  }
+
+  /* Hide every piece of interactive/navigation chrome */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Kill sticky/fixed positioning so nothing pins itself mid-report */
+  * {
+    position: static !important;
+  }
+
+  /* Remove glassmorphism, shadows, blur, hover/animation artifacts on paper */
+  .glass {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #ffffff !important;
+    border: 1px solid #D7DCE3 !important;
+    box-shadow: none !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Scrollable containers become fully visible, unclipped, on paper */
+  * {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* CSS Grid and Flexbox are unreliable for page-break calculations across
+     browsers/print engines — `break-inside: avoid` on a grid/flex CHILD is
+     frequently ignored while its PARENT is still laid out as a grid/flex
+     container, which is exactly why charts and cards were still splitting
+     mid-page. Forcing every grid/flex layout wrapper into normal block flow
+     for print — one section per row — makes each card/chart a true block-
+     level box in the page's normal flow, so `break-inside: avoid` actually
+     takes effect and the browser is free to push it whole onto the next
+     page instead of slicing it. */
+  .grid {
+    display: block !important;
+  }
+  .grid > * {
+    width: 100% !important;
+    margin-bottom: 10mm;
+  }
+  .grid > *:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Never split a chart, card, timeline entry, or table row across pages */
+  .avoid-break {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    display: block;
+  }
+
+  /* Repeat table headers on every printed page, keep rows intact */
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+  thead {
+    display: table-header-group !important;
+  }
+  tr {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}

@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: patient360-db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-patient360_db}
+      POSTGRES_USER: ${DB_USER:-patient360_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in a .env file next to docker-compose.yml}
+    ports:
+      - "5432:5432"
+    volumes:
+      - patient360_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-patient360_user} -d ${DB_NAME:-patient360_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+    container_name: patient360-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    environment:
+      # Overrides whatever backend/.env has, so the backend always talks to
+      # the `db` service above when running under Docker Compose.
+      DATABASE_URL: postgresql+psycopg2://${DB_USER:-patient360_user}:${DB_PASSWORD:?Set DB_PASSWORD in a .env file next to docker-compose.yml}@db:5432/${DB_NAME:-patient360_db}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: patient360-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  patient360_pgdata:

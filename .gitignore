@@ -1,0 +1,68 @@
+# ==========================================
+# Python / Backend
+# ==========================================
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Backend environment variables
+backend/.env
+
+# Pytest
+.pytest_cache/
+
+# Generated exports
+backend/exports/*
+!backend/exports/.gitkeep
+
+# Test databases
+backend/test_patient360.db
+backend/test_patient360.db-journal
+
+# SQLite temporary files
+*.db-journal
+
+# ==========================================
+# Frontend
+# ==========================================
+
+# Node dependencies
+frontend/node_modules/
+
+# Production build
+frontend/dist/
+
+# Frontend environment variables
+frontend/.env
+
+# ==========================================
+# Root environment
+# ==========================================
+
+.env
+
+# ==========================================
+# Logs
+# ==========================================
+
+*.log
+
+# ==========================================
+# OS files
+# ==========================================
+
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# Editor
+# ==========================================
+
+.vscode/

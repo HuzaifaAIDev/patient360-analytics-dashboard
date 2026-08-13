@@ -1,0 +1,26 @@
+fastapi==0.115.14
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+pydantic-settings==2.5.2
+pandas==2.2.2
+numpy==1.26.4
+orjson==3.11.9
+python-dotenv==1.2.2
+rapidfuzz==3.9.7
+reportlab==4.2.2
+openpyxl==3.1.5
+httpx==0.27.2
+pytest==8.4.2
+pytest-asyncio==0.24.0
+
+# --- Database ---
+SQLAlchemy==2.0.35
+psycopg2-binary==2.9.9   # PostgreSQL driver
+PyMySQL==1.1.1            # MySQL driver
+pyodbc==5.1.0              # SQL Server driver (requires unixODBC + a
+                            # Microsoft ODBC Driver installed at the OS
+                            # level to actually CONNECT — see
+                            # docs/Database_Connection_Guide.pdf. `pip
+                            # install` succeeds without them; only
+                            # connecting to an mssql+pyodbc URL needs them.)
+cryptography==44.0.1       # required by PyMySQL for some auth plugins
