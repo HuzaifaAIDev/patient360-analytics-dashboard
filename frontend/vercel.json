@@ -3,6 +3,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://patient360-analytics-dashboard-production.up.railway.app/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
