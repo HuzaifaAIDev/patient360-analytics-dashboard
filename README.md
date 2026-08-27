@@ -140,7 +140,7 @@ The main dashboard provides a high-level overview of the complete dataset, inclu
 
 Interactive patient-level analytics provide insights into disease frequency, disease distribution, hospital visits, doctor frequency, and other patient dimensions.
 
-![Patient Analytics](./docs/screenshots/patient-analytics.png)
+![Patient Analytics](./docs/screenshots/patient_analytics.png)
 
 ---
 
