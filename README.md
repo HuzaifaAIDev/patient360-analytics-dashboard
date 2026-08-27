@@ -148,7 +148,7 @@ Interactive patient-level analytics provide insights into disease frequency, dis
 
 The patient overview provides key statistics and a summarized view of an individual patient's medical history.
 
-![Patient Overview](./docs/screenshots/patient-overview.png)
+![Patient Overview](./docs/screenshots/patient_overview.png)
 
 ---
 
@@ -156,7 +156,7 @@ The patient overview provides key statistics and a summarized view of an individ
 
 The chronological timeline displays every recorded visit, including visit date, hospital, doctor, diseases, claim amount, and visit notes.
 
-![Patient Timeline](./docs/screenshots/patient-timeline.png)
+![Patient Timeline](./docs/screenshots/patient_timeline.png)
 
 ---
 
@@ -171,7 +171,7 @@ Supported export formats include:
 - JSON
 - PDF
 
-![Patient Records](./docs/screenshots/patient-records.png)
+![Patient Records](./docs/screenshots/patient_records.png)
 
 ---
 
